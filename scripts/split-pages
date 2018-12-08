@@ -8,7 +8,7 @@ output_file = sys.argv[2]
 input = PdfFileReader(open(input_file, "rb"))
 output = PdfFileWriter()
 
-for p in [input.getPage(i) for i in range(0,input.getNumPages())]:
+for p in [input.getPage(i) for i in range(0, input.getNumPages())]:
     q = copy.copy(p)
     (w, h) = p.mediaBox.upperRight
 

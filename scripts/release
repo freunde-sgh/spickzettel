@@ -50,7 +50,7 @@ github = Octokit::Client.new(access_token: ENV.fetch('GITHUB_ACCESS_TOKEN'))
 
 warn "Creating new release as #{tag}"
 release = github.create_release(
-  'suhlig/spickzettel',
+  'freunde-sgh/spickzettel',
   tag,
   name: "Spickzettel Release #{tag}",
   body: template.result(binding)

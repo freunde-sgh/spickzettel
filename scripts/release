@@ -36,7 +36,7 @@ end
 
 begin
   git.add_tag(tag, options: { annotate: tag, message: tag })
-#  git.push
+  git.push
 rescue Git::GitExecuteError => e
   warn "Error: #{e.message}"
   exit 3
@@ -53,10 +53,11 @@ release = github.create_release(
   body: template.result(binding)
 )
 
-assets.each do |asset|
+assets.each.with_index do |asset, i|
+  warn "Uploading #{asset} (#{i + 1} of #{assets.size}"
   github.upload_asset(
     release.url,
-    asset.path,
+    asset.to_s,
     content_type: 'application/pdf',
   )
 end

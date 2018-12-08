@@ -1,8 +1,10 @@
 #!/bin/bash
-
 # uses convert which is part of the imagemagick package
 
-readonly pdf="$1"
-readonly png=$(basename "$pdf" .pdf).png
+set -euo pipefail
+IFS=$'\n\t'
 
-convert -thumbnail x600 -background white -alpha remove "$pdf"[0] thumbnail/"$png";
+readonly pdf="${1?Missing argument for the PDF file}"
+readonly png="thumbnail/$(basename "$pdf" .pdf).png"
+convert -thumbnail x600 -background white -alpha remove "$pdf"[0] "$png";
+echo Thumbnail successfully written to "$png"

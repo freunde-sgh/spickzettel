@@ -13,7 +13,7 @@ Tools for creating the archive of the [Spickzettel](http://freunde-sgh.de/spickz
 1. Split double pages into single ones:
 
    ```sh
-   $ scripts/pdf-split < scanned/spickzettel_$i.pdf > split/spickzettel_$i.pdf
+   $ scripts/split-pages < scanned/spickzettel_$i.pdf > split/spickzettel_$i.pdf
    ```
 
 1. Re-order pages:
@@ -37,7 +37,12 @@ Tools for creating the archive of the [Spickzettel](http://freunde-sgh.de/spickz
 When you are done with a number of issues, create a new release and attach the PDFs to it:
 
 ```sh
-$ scripts/release 25 26 27 --tag 1.0
+$ GITHUB_ACCESS_TOKEN=XY..Z scripts/release 25 26 27 --tag 1.0
 ```
 
-Upload to freunde-sgh.de and assign category "Spickzettel", which makes it appear in the [index page](http://freunde-sgh.de/spickzettel).
+Then, upload new PDFs to freunde-sgh.de and assign the category "Spickzettel", which makes it appear in the [index page](http://freunde-sgh.de/spickzettel).
+
+# TODO
+
+* Make `split-pages` fit in with the other tools by having it take file names instead of using STDIN / STDOUT
+*

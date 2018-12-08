@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# uses convert which is part of the imagemagick package
+
+readonly pdf="$1"
+readonly png=$(basename "$pdf" .pdf).png
+
+convert -thumbnail x600 -background white -alpha remove "$pdf"[0] thumbnail/"$png";

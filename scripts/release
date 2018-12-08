@@ -1,0 +1,62 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'erb'
+require 'git'
+require 'optparse'
+require 'octokit'
+require 'pathname'
+
+tag = nil
+
+begin
+  OptionParser.new do |opts|
+    opts.banner = "Usage: #{opts.program_name} FILES"
+
+    opts.on('-t', '--tag=TAG', OptionParser::DecimalNumeric, 'Create new TAG for the release') do |t|
+      tag = "v#{t}"
+    end
+  end.parse!
+rescue StandardError => e
+  warn "Error: #{e.message}"
+  exit 1
+end
+
+if tag.nil?
+  warn "Error: tag is mandatory"
+  exit 1
+end
+
+git = Git.open(Pathname(__dir__) / '..')
+
+if git.tags.any?{|t| t.name == tag}
+  warn "Error: Tag #{tag} is already in use."
+  exit 2
+end
+
+begin
+  git.add_tag(tag, options: { annotate: tag, message: tag })
+#  git.push
+rescue Git::GitExecuteError => e
+  warn "Error: #{e.message}"
+  exit 3
+end
+
+template = ERB.new(File.read(Pathname(__dir__) / '../templates/github-release.erb'), 0, '-')
+assets = ARGV.map{|f| Pathname(f)}
+
+github = Octokit::Client.new(access_token: ENV.fetch('GITHUB_ACCESS_TOKEN'))
+release = github.create_release(
+  'suhlig/spickzettel',
+  tag,
+  name: "Spickzettel Release #{tag}",
+  body: template.result(binding)
+)
+
+assets.each do |asset|
+  github.upload_asset(
+    release.url,
+    asset.path,
+    content_type: 'application/pdf',
+  )
+end

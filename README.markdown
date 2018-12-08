@@ -13,18 +13,18 @@ Tools for creating the archive of the [Spickzettel](http://freunde-sgh.de/spickz
 1. Split double pages into single ones:
 
    ```sh
-   $ scripts/split-pages < scanned/spickzettel_$i.pdf > split/spickzettel_$i.pdf
+   $ scripts/split-pages scanned/spickzettel_$i.pdf split/spickzettel_$i.pdf
    ```
 
 1. Re-order pages:
 
    ```sh
-   $ scripts/reorder-pages < split/spickzettel_$i.pdf > done/spickzettel_$i.pdf
+   $ scripts/reorder-pages split/spickzettel_$i.pdf done/spickzettel_$i.pdf 44 1 40 5 24 21 0 45 4 41 30 15 42 3 46 -1 6 39 38 7 8 37 14 31 32 13 18 27 26 19 20 25 16 29 12 33 34 22 23 10 35 36 9 28 17 2 43 11
    ```
 
 1. Double-check uprightness manually in Preview.app (some pages need to be turned again after splitting).
 
-1. Keep center-fold as single page (or re-join if applicable).
+1. Optional: Keep center-fold as single page (or re-join if applicable).
 
 1. Create thumbnail of cover page:
 
@@ -37,11 +37,7 @@ Tools for creating the archive of the [Spickzettel](http://freunde-sgh.de/spickz
 When you are done with a number of issues, create a new release and attach the PDFs to it:
 
 ```sh
-$ GITHUB_ACCESS_TOKEN=XY..Z scripts/release --tag 1.0 done/spickzettel_5*.pdf thumbnail/spickzettel_5*.png
+$ GITHUB_ACCESS_TOKEN=XY..Z scripts/release --tag 1.0 done/spickzettel_$i.pdf thumbnail/spickzettel_$i.png
 ```
 
 Then, upload new PDFs to freunde-sgh.de and assign the category "Spickzettel", which makes it appear in the [index page](http://freunde-sgh.de/spickzettel).
-
-# TODO
-
-* Make `split-pages` fit in with the other tools by having it take file names instead of using STDIN / STDOUT

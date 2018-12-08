@@ -3,8 +3,11 @@
 import copy, sys
 from pyPdf import PdfFileWriter, PdfFileReader
 
-input = PdfFileReader(sys.stdin)
+input_file = sys.argv[1]
+output_file = sys.argv[2]
+input = PdfFileReader(open(input_file, "rb"))
 output = PdfFileWriter()
+
 for p in [input.getPage(i) for i in range(0,input.getNumPages())]:
     q = copy.copy(p)
     (w, h) = p.mediaBox.upperRight
@@ -18,4 +21,5 @@ for p in [input.getPage(i) for i in range(0,input.getNumPages())]:
 
     output.addPage(p)
     output.addPage(q)
-output.write(sys.stdout)
+
+output.write(file(output_file, "wb"))

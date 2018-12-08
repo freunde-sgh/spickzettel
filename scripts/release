@@ -34,6 +34,7 @@ if git.tags.any?{|t| t.name == tag}
   exit 2
 end
 
+warn "Tagging as #{tag}"
 begin
   git.add_tag(tag, options: { annotate: tag, message: tag })
   git.push
@@ -46,6 +47,8 @@ template = ERB.new(File.read(Pathname(__dir__) / '../templates/github-release.er
 assets = ARGV.map{|f| Pathname(f)}
 
 github = Octokit::Client.new(access_token: ENV.fetch('GITHUB_ACCESS_TOKEN'))
+
+warn "Creating new release as #{tag}"
 release = github.create_release(
   'suhlig/spickzettel',
   tag,
@@ -54,10 +57,13 @@ release = github.create_release(
 )
 
 assets.each.with_index do |asset, i|
-  warn "Uploading #{asset} (#{i + 1} of #{assets.size}"
+  warn "Uploading #{asset} (#{i + 1} of #{assets.size})"
   github.upload_asset(
     release.url,
     asset.to_s,
     content_type: 'application/pdf',
   )
 end
+
+warn "Done. The new release can be found at"
+puts release.html_url

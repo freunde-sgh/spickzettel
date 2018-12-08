@@ -37,7 +37,7 @@ Tools for creating the archive of the [Spickzettel](http://freunde-sgh.de/spickz
 When you are done with a number of issues, create a new release and attach the PDFs to it:
 
 ```sh
-$ GITHUB_ACCESS_TOKEN=XY..Z scripts/release 25 26 27 --tag 1.0
+$ GITHUB_ACCESS_TOKEN=XY..Z scripts/release --tag 1.0 done/spickzettel_5*.pdf thumbnail/spickzettel_5*.png
 ```
 
 Then, upload new PDFs to freunde-sgh.de and assign the category "Spickzettel", which makes it appear in the [index page](http://freunde-sgh.de/spickzettel).
@@ -45,4 +45,3 @@ Then, upload new PDFs to freunde-sgh.de and assign the category "Spickzettel", w
 # TODO
 
 * Make `split-pages` fit in with the other tools by having it take file names instead of using STDIN / STDOUT
-*

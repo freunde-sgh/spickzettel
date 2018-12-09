@@ -8,16 +8,24 @@ output_file = sys.argv[2]
 input = PdfFileReader(open(input_file, "rb"))
 output = PdfFileWriter()
 
-for p in [input.getPage(i) for i in range(0, input.getNumPages())]:
+# Optionally provide single page numbers as additional args, otherwise _all_ pages will be split.
+if len(sys.argv) > 3:
+    pages = [int(i) - 1 for i in sys.argv[3:]]
+else:
+    pages = range(0, input.getNumPages())
+
+for p in [input.getPage(i) for i in pages]:
     q = copy.copy(p)
     (w, h) = p.mediaBox.upperRight
 
-    if w > h:
-        p.mediaBox.upperRight = (w / 2, h)
-        q.mediaBox.upperLeft = (w / 2, h)
-    else:
-        p.mediaBox.upperRight = (w, h / 2)
-        q.mediaBox.upperLeft = (w, h / 2)
+    if w > h: # landscape
+        newWidth = w / 2
+        p.mediaBox.upperRight = (newWidth, h)
+        q.mediaBox.upperLeft = (newWidth, h)
+    else: # portrait
+        newHeight = h / 2
+        p.mediaBox.lowerRight = (w, newHeight)
+        q.mediaBox.upperRight = (w, newHeight)
 
     output.addPage(p)
     output.addPage(q)

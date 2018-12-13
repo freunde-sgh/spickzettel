@@ -43,3 +43,16 @@ $ GITHUB_ACCESS_TOKEN=XY..Z scripts/release --tag 1.0 done/spickzettel_$i.pdf th
 ```
 
 Then, upload new PDFs to freunde-sgh.de and assign the category "Spickzettel", which makes it appear in the [index page](http://freunde-sgh.de/spickzettel).
+
+# TODO
+
+* Without full text, and not split yet:
+
+  - spickzettel-34.pdf
+  - spickzettel-36.pdf
+
+* #37 has press marks and needs to have its [cropBox](https://pythonhosted.org/PyPDF2/PageObject.html#PyPDF2.pdf.PageObject.cropBox) set
+
+* Document titles are mostly garbage, but may be useful for searching
+
+* Many of the later issues do not have the cover page as #1, but the very last page. Need to split and move.
